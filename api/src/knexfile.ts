@@ -1,15 +1,21 @@
 import path from 'path'
 
 module.exports = {
-    client: 'sqlite3',
-    connection:{
-        filename: path.resolve(__dirname, 'database', 'database.sqlite')
+    client: 'mysql2',
+    connection: {
+        host: 'demodaypalomadb.mysql.database.azure.com',
+        port: '3306',
+        database: 'Courses',
+        user:     'Pfiap@demodaypalomadb',
+        password: 'Paloma!@#$'
+    },
+    pool: {
+        min: 2,
+        max: 10
     },
     migrations: {
-        directory: path.resolve(__dirname, 'database', 'migrations')
-    },
-    
-    useNullAsDefault: true,    
+        tableName: 'knex_migrations'
+    }   
 };
 
 

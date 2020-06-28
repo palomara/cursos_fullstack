@@ -1,29 +1,25 @@
 import knex from '../database/connection'
+import {Courses} from '../model/Courses'
 
 class CoursesServices{
 
     table:string = 'Courses'
     constructor(){}
 
-    async GetAll(): Promise<any[]>{
-        const courses = await knex(this.table).select('*');
-
-        return courses;
+    async GetAll(): Promise<Courses[]>{
+       return await knex<Courses>(this.table).select('*')
     }
 
-    async Create(id: number, course: any): Promise<any>{
+    async Create(id: number, course: Courses): Promise<Courses | undefined>{
         const trx = await knex.transaction()
         const persistedIds = await trx(this.table).insert(course);
         trx.commit();
-        const id = persistedIds[0]
-        
-        return knex(this.table).select('*').where('id', '=', id).first();
+        const idInserted = persistedIds[0]
+        return await knex<Courses>(this.table).select('*').where('id', '=', idInserted).first();
     }
 
-    async GetById(id: number): Promise<any>{
-        const courses = await knex(this.table).select('*').where('id', '=', id).first();
-
-        return courses;
+    async GetById(id: number): Promise<Courses | undefined>{
+        return await knex<Courses>(this.table).select('*').where('id', '=', id).first();
     }
 
     async Delete(id: number): Promise<any>{

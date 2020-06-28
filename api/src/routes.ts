@@ -1,7 +1,9 @@
 import express from 'express'
 import CoursesController  from  './controller/CoursesController'
+import CoursesServices from './Services/CoursesServices';
 
 const routes = express.Router();
+const coursesServices = new CoursesServices()
 const coursesController = new CoursesController();
 
 

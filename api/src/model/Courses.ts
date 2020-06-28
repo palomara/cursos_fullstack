@@ -1,21 +1,21 @@
-import * as moment from 'moment'
-
-export default class Courses {
-    id: Number;
+export type Courses {
+    id?: Number;
     title: string = ''; 
     subtitle: string = '';
-    startedAt:  = new Date();
+    startedAt: Date;
     description: string = '';
     isActive: boolean = false;
     created: Date;
     updated: Date;
+}
 
-    constructor(title: string,
-                subtitle: string,
-                startedAt: Date,
-                description: string,
-                created: Date){
-    this.title
-
-    }
+export type CoursesViewModel{
+    id?: Number;
+    title: String;
+    subtitle: String;
+    startedAt: String;
+    description: String;
+    isActive: Boolean;
+    created: String;
+    updated: String;
 }

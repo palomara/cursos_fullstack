@@ -1,6 +1,7 @@
 import { Request, Response, json } from 'express'
 import moment from 'moment'
 import coursesServices from '../Services/CoursesServices'
+import { Courses } from '../model/Courses'
 
 
 class CoursesController {
@@ -9,38 +10,21 @@ class CoursesController {
 
     async index(request: Request, response: Response) {
         const service = new coursesServices()
-
-        service.GetAll().then(value => {
-            var course = value.map(item => {
-                return {
-                    id: item.id,
-                    title: item.title,
-                    subtitle: item.subtitle,
-                    createdAt: moment(item.createdAt),
-                    description: item.description,
-                    updated: item.updated,
-                    isActive: Boolean(item.isActive)
-                }
-            });
-            return response.json(course);
-        }).catch(err => {
-            return response.status(500).json(err)
-        });
-
-
+        const courses = await service.GetAll()
+        return response.status(200).json(courses);
     }
 
     async create(request: Request, response: Response) {
         const id = Number(request.params.id)
         const { title, subtitle, startedAt, description, isActive } = request.body;
-        const date = moment([]).toISOString()
+        const date = moment().endOf('day').toDate()
         const created = date
         const updated = date
 
-        const course = {
+        const course: Courses = {
             title,
             subtitle,
-            startedAt: moment(startedAt).toISOString(),
+            startedAt: moment(startedAt).toDate(),
             description,
             isActive,
             created,
@@ -49,13 +33,12 @@ class CoursesController {
 
         const service = new coursesServices()
 
-        service.Create(id, course).then(value => {
-            return response.status(201).json(value);
-        }).catch(err => {
-            return response.status(500).json(err);
-        })
-
-
+        try {
+            const insertedCourse = await service.Create(id, course)
+            return response.status(201).json(insertedCourse);
+        } catch (error) {
+            return response.status(500).json((error))
+        }
 
     }
 
@@ -63,11 +46,11 @@ class CoursesController {
         const id = Number(request.params.id)
         const service = new coursesServices()
 
-        service.GetById(id).then(value => {
-            return response.status(200).json(value);
-        }).catch(err => {
-            return response.status(500).json(err);
-        })
+        const course = await service.GetById(id);
+        if(typeof course == 'undefined'){
+            return response.status(204);
+        }
+        return response.status(200).json(course);
     }
 
     async delete(request: Request, response: Response) {
@@ -99,9 +82,9 @@ class CoursesController {
         const service = new coursesServices()
 
         service.update(id, course)
-        .then(value => {
-            return response.status(200).json({ isUpdated: Boolean(value) });
-        })
+            .then(value => {
+                return response.status(200).json({ isUpdated: Boolean(value) });
+            })
     }
 
 }
