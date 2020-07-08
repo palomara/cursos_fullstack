@@ -6,10 +6,9 @@ const routes = express.Router();
 const coursesServices = new CoursesServices()
 const coursesController = new CoursesController();
 
-
+routes.get('/courses/:id', coursesController.show)
 routes.get('/courses/find', coursesController.index)
 routes.put('/courses/:id', coursesController.create)
-routes.get('/courses/:id', coursesController.show)
 routes.delete('/courses/:id', coursesController.delete)
 routes.patch('/courses/:id', coursesController.updated)
 

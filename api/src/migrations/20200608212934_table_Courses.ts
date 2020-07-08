@@ -2,6 +2,9 @@ import * as Knex from "knex";
 
 
 export async function up(knex: Knex): Promise<any> {
+
+    await down(knex);
+
     return knex.schema.createTable('Courses', table =>{
         table.increments('id').primary();
         table.string('title').notNullable();
@@ -11,7 +14,6 @@ export async function up(knex: Knex): Promise<any> {
         table.boolean('isActive').defaultTo(false)
         table.date('created').notNullable();
         table.date('updated').notNullable();
-        
     })
 }
 
