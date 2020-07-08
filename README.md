@@ -45,6 +45,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ---
 
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=password -p 3306:3306 -d mysql:5.7
+
 ## Missão backend
 
 Desenvolver uma **API JSON RESTful** em **Node**, que utilize todos os métodos (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`).  
